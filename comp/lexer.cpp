@@ -1,24 +1,24 @@
 #include "lexer.h"
 
 Keyword keywords[] = {
-    {"ns", TOKEN_NS},
-    {"using", TOKEN_USING},
+    {    "ns",     TOKEN_NS},
+    { "using",  TOKEN_USING},
     {"struct", TOKEN_STRUCT},
-    {"enum", TOKEN_ENUM},
-    {"async", TOKEN_ASYNC},
+    {  "enum",   TOKEN_ENUM},
+    { "async",  TOKEN_ASYNC},
     {"export", TOKEN_EXPORT},
-    {"void", TOKEN_VOID},
-    {"if", TOKEN_IF},
-    {"while", TOKEN_WHILE},
+    {  "void",   TOKEN_VOID},
+    {    "if",     TOKEN_IF},
+    { "while",  TOKEN_WHILE},
     {"return", TOKEN_RETURN},
-    {"await", TOKEN_AWAIT},
+    { "await",  TOKEN_AWAIT},
     {"string", TOKEN_STRING},
-    {"any", TOKEN_ANY},
-    {"int", TOKEN_INT},
-    {"bool", TOKEN_BOOL},
-    {"float", TOKEN_FLOAT},
-    {"list", TOKEN_LIST},
-    {nullptr, TOKEN_ERROR},
+    {   "any",    TOKEN_ANY},
+    {   "int",    TOKEN_INT},
+    {  "bool",   TOKEN_BOOL},
+    { "float",  TOKEN_FLOAT},
+    {  "list",   TOKEN_LIST},
+    { nullptr,  TOKEN_ERROR},
 };
 
 Token Lexer::scan_token() {
@@ -37,23 +37,40 @@ Token Lexer::scan_token() {
         return number();
 
     switch (c) {
-        case '(': return make_token(TOKEN_LPAREN);
-        case ')': return make_token(TOKEN_RPAREN);
-        case '{': return make_token(TOKEN_LBRACE);
-        case '}': return make_token(TOKEN_RBRACE);
-        case '[': return make_token(TOKEN_LBRACKET);
-        case ']': return make_token(TOKEN_RBRACKET);
-        case ':': return make_token(TOKEN_COLON);
-        case ';': return make_token(TOKEN_SEMICOLON);
-        case '.': return make_token(TOKEN_DOT);
-        case ',': return make_token(TOKEN_COMMA);
-        case '+': return make_token(TOKEN_PLUS);
-        case '-': return make_token(TOKEN_MINUS);
-        case '*': return make_token(TOKEN_STAR);
-        case '/': return make_token(TOKEN_SLASH);
-        case '~': return make_token(TOKEN_TILDE);
-        case '$': return make_token(TOKEN_DOLLAR);
-        case '?': return make_token(TOKEN_QUESTION);
+        case '(':
+            return make_token(TOKEN_LPAREN);
+        case ')':
+            return make_token(TOKEN_RPAREN);
+        case '{':
+            return make_token(TOKEN_LBRACE);
+        case '}':
+            return make_token(TOKEN_RBRACE);
+        case '[':
+            return make_token(TOKEN_LBRACKET);
+        case ']':
+            return make_token(TOKEN_RBRACKET);
+        case ':':
+            return make_token(TOKEN_COLON);
+        case ';':
+            return make_token(TOKEN_SEMICOLON);
+        case '.':
+            return make_token(TOKEN_DOT);
+        case ',':
+            return make_token(TOKEN_COMMA);
+        case '+':
+            return make_token(TOKEN_PLUS);
+        case '-':
+            return make_token(TOKEN_MINUS);
+        case '*':
+            return make_token(TOKEN_STAR);
+        case '/':
+            return make_token(TOKEN_SLASH);
+        case '~':
+            return make_token(TOKEN_TILDE);
+        case '$':
+            return make_token(TOKEN_DOLLAR);
+        case '?':
+            return make_token(TOKEN_QUESTION);
         case '!':
             if (peek() == '=') {
                 advance();
@@ -106,6 +123,8 @@ Token Lexer::scan_token() {
     return make_token(TOKEN_ERROR);
 }
 
+// TODO @next this needs to be passed the lexeme as a string_view,
+//            or the start and end indices to create a string_view.
 Token Lexer::make_token(TokenType type) {
     return Token{type, content.substr(start, current - start), line, col};
 }
@@ -141,7 +160,7 @@ Token Lexer::number() {
 Token Lexer::string_with_double_quotes(bool double_quote) {
     const char quote = double_quote ? '"' : '\'';
     while (peek() != quote && !is_at_end()) {
-        if (peek() == '\n') // support multiline strings
+        if (peek() == '\n')  // support multiline strings
             ++line;
         advance();
     }
@@ -149,7 +168,7 @@ Token Lexer::string_with_double_quotes(bool double_quote) {
     if (is_at_end())
         return Token{TOKEN_ERROR, "Unterminated string", line, col};
 
-    advance(); // advanced over the closing quote
+    advance();  // advanced over the closing quote
     return make_token(TOKEN_STRING_LITERAL);
 }
 

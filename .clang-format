@@ -5,3 +5,4 @@ ColumnLimit: 0
 SpacesBeforeTrailingComments: 2
 PointerAlignment: Left
 AlignArrayOfStructures: Right
+IndentCaseLabels: true

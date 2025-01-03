@@ -80,7 +80,6 @@ int main(int argc, char* argv[]) {
     std::string filename = input_file;
     std::string content = readfile(filename);
 
-    sprint(content);
     Lexer lexer;
     lexer = {content, filename};
 
@@ -94,6 +93,8 @@ int main(int argc, char* argv[]) {
             }
         } while (token.type != TOKEN_ERROR);
     }
+
+    sprint(content);
 
     return 0;
 }

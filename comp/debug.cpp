@@ -1,10 +1,10 @@
-#include "lexer.h"
 #include "debug.h"
+#include "lexer.h"
 
 #include <iostream>
 
 void print_token(Token& token) {
-    std::cout << ANSI_COLOR_YELLOW << "[Line " << token.line << ", Col " << token.col << "] " << ANSI_COLOR_RESET;
+    std::cout << ANSI_COLOR_YELLOW << "[L" << token.line << ":" << token.col << "] " << ANSI_COLOR_RESET;
     std::cout << ANSI_COLOR_BLUE;
     switch (token.type) {
         case TOKEN_LPAREN:

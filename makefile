@@ -38,7 +38,7 @@ tests: rebuild
 
 # Temp debug test
 quick: rebuild
-	./$(TARGET) tests/example.pen
+	./$(TARGET) -t tests/example.pen
 
 # Release build
 release: FLAGS := -Wall -Wextra -std=c++20 -O2
