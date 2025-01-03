@@ -20,7 +20,7 @@ $(TARGET): $(SRCS) $(HDRS)
 
 # Clean build artifacts
 clean:
-	rm -f $(TARGET) *.o
+	rm -rf $(TARGET) *.o *.dSYM
 
 # Rebuild
 rebuild: clean all
