@@ -1,8 +1,8 @@
 #pragma once
 
+#include <cassert>
 #include <string>
 #include <string_view>
-#include <cassert>
 
 enum TokenType {
     // error types
@@ -87,7 +87,7 @@ struct Lexer {
 
     Token scan_token();
 
-   private:
+  private:
     Token make_token(TokenType type);
     bool is_alpha(char c);
     bool is_digit(char c);
