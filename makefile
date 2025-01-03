@@ -3,13 +3,13 @@ CC = clang++
 FLAGS = -Wall -Wextra -std=c++20 -g
 
 # Source files
-SRCS = **.cpp
+SRCS = comp/**.cpp
 # Header files
-HDRS = **.h
+HDRS = comp/**.h
 # Output binary
 TARGET = penc
 # Test files
-TESTS = $(wildcard test*.pen)
+TESTS = $(wildcard tests/*.pen)
 
 # Default rule
 all: $(TARGET)
@@ -37,4 +37,4 @@ test: rebuild
 	@echo "All tests passed"
 
 quick: rebuild
-	./$(TARGET) example.pen
+	./$(TARGET) tests/example.pen
