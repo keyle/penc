@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <iostream>
 #include <fstream>
+#include <format>
 
 #include "lexer.h"
 
@@ -14,9 +15,10 @@ std::string readfile(const std::string& filename) {
 }
 
 int main(int argc, char* argv[]) {
+    std::string binary = argv[0];
+
     if (argc < 2) {
-        std::string err = "Usage: app <file>";
-        std::cerr << err << '\n';
+        std::cerr << std::format("Usage: {} <file>\n", argv[0]);
         return 1;
     }
 
