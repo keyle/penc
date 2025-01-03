@@ -1,8 +1,2 @@
 CompileFlags:
-  # Specify paths to additional system or project-specific headers.
   Add: [-Wall, -Wextra, -std=c++20]
-
-Diagnostics:
-  Suppress:  # Suppress specific warnings.
-#    - unused-variable
-#    - sign-conversion
