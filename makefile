@@ -26,7 +26,7 @@ clean:
 rebuild: clean all
 
 # Run tests
-test: rebuild
+tests: rebuild
 	@for test in $(TESTS); do \
 		echo "Testing: $$test"; \
 		if ! ./$(TARGET) $$test; then \
@@ -36,5 +36,10 @@ test: rebuild
 	done
 	@echo "All tests passed"
 
+# Temp debug test
 quick: rebuild
 	./$(TARGET) tests/example.pen
+
+# Release build
+release: FLAGS := -Wall -Wextra -std=c++20 -O2
+release: rebuild
