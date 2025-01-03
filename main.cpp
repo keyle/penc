@@ -4,6 +4,7 @@
 #include <format>
 
 #include "lexer.h"
+#include "utils.h"
 
 std::string readfile(const std::string& filename) {
     std::ifstream inputFile(filename);
@@ -24,7 +25,8 @@ int main(int argc, char* argv[]) {
 
     std::string filename = argv[1];
     std::string content = readfile(filename);
-    std::cout << content << '\n';
+
+    sprint(content);
 
     Lexer lexer = {content, filename};
 
