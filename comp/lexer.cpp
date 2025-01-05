@@ -123,8 +123,6 @@ Token Lexer::scan_token() {
     return make_token(TOKEN_ERROR);
 }
 
-// TODO @next this needs to be passed the lexeme as a string_view,
-//            or the start and end indices to create a string_view.
 Token Lexer::make_token(TokenType type) {
     return Token{type, content.substr(start, current - start), line, col};
 }

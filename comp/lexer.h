@@ -2,7 +2,6 @@
 
 #include <cassert>
 #include <string>
-#include <string_view>
 
 enum TokenType {
     // error types
@@ -71,7 +70,7 @@ extern Keyword keywords[];
 
 struct Token {
     TokenType type;
-    std::string_view lexeme;
+    std::string lexeme;
     int line;
     int col;
 };
