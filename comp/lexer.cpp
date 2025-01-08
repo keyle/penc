@@ -13,9 +13,10 @@ Keyword keywords[] = {
     {"return", TOKEN_RETURN},
     { "await",  TOKEN_AWAIT},
     {"string", TOKEN_STRING},
-    {   "any",    TOKEN_ANY},
+    { "const",  TOKEN_CONST},
     {   "int",    TOKEN_INT},
     {  "bool",   TOKEN_BOOL},
+    {  "func",   TOKEN_FUNC},
     { "float",  TOKEN_FLOAT},
     {  "list",   TOKEN_LIST},
     { nullptr,  TOKEN_ERROR},
@@ -50,7 +51,12 @@ Token Lexer::scan_token() {
         case ']':
             return make_token(TOKEN_RBRACKET);
         case ':':
-            return make_token(TOKEN_COLON);
+             if (peek() == '=') {
+                advance();
+                return make_token(TOKEN_AUTO_ASSIGN);
+            } else {
+                return make_token(TOKEN_COLON);
+            }
         case ';':
             return make_token(TOKEN_SEMICOLON);
         case '.':
@@ -69,6 +75,10 @@ Token Lexer::scan_token() {
             return make_token(TOKEN_TILDE);
         case '$':
             return make_token(TOKEN_DOLLAR);
+        case '@':
+            return make_token(TOKEN_AT);
+        case '`':
+            return make_token(TOKEN_BACKTICK);
         case '?':
             return make_token(TOKEN_QUESTION);
         case '!':
@@ -106,6 +116,8 @@ Token Lexer::scan_token() {
             if (peek() == '&') {
                 advance();
                 return make_token(TOKEN_BIN_AND);
+            } else {
+                return make_token(TOKEN_AMPERSAND);
             }
         case '|':
             if (peek() == '|') {
@@ -113,6 +125,8 @@ Token Lexer::scan_token() {
                 return make_token(TOKEN_BIN_OR);
             }
         case '"':
+            // TODO parse string interpolation within here. Unroll this function and return STRING_LITERAL + INTERPOLATED + STRING_LITERAL...
+            // basically we need a state to say we are within a string literal and we should only get out of it when we find an actual second `"`
             return string_with_double_quotes(true);
         case '\'':
             return string_with_double_quotes(false);

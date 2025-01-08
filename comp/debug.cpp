@@ -4,7 +4,7 @@
 #include <iostream>
 
 void print_token(Token& token) {
-    std::cout << ANSI_COLOR_YELLOW << "[L" << token.line << ":" << token.col << "] " << ANSI_COLOR_RESET;
+    std::cout << ANSI_COLOR_YELLOW << "[L" << token.line << ":" << token.col << "]    \t" << ANSI_COLOR_RESET;
     std::cout << ANSI_COLOR_BLUE;
     switch (token.type) {
         case TOKEN_LPAREN:
@@ -40,11 +40,32 @@ void print_token(Token& token) {
         case TOKEN_SLASH:
             std::cout << "SLASH";
             break;
+        case TOKEN_DOT:
+            std::cout << "DOT";
+            break;
         case TOKEN_EQUALS:
             std::cout << "EQUALS";
             break;
         case TOKEN_TILDE:
             std::cout << "TILDE";
+            break;
+        case TOKEN_COMMA:
+            std::cout << "COMMA";
+            break;
+        case TOKEN_AMPERSAND:
+            std::cout << "AMPERSAND";
+            break;
+        case TOKEN_AT:
+            std::cout << "AT";
+            break;
+        case TOKEN_BACKTICK:
+            std::cout << "BACKTICK";
+            break;
+        case TOKEN_COLON:
+            std::cout << "COLON";
+            break;
+        case TOKEN_AUTO_ASSIGN:
+            std::cout << "AUTO_ASSIGN"; // :=
             break;
         case TOKEN_QUESTION:
             std::cout << "QUESTION";
@@ -88,8 +109,36 @@ void print_token(Token& token) {
         case TOKEN_EOF:
             std::cout << "EOF";
             break;
+        case TOKEN_INT:
+            std::cout << "INT";
+            break;
+        case TOKEN_STRING:
+            std::cout << "STRING";
+            break;
+        case TOKEN_FLOAT:
+            std::cout << "FLOAT";
+            break;
+        case TOKEN_BOOL:
+            std::cout << "BOOL";
+            break;
+        case TOKEN_CONST:
+            std::cout << "CONST";
+            break;
+        case TOKEN_FUNC:
+            std::cout << "FUNC";
+            break;
+        case TOKEN_NS:
+            std::cout << "NAMESPACE";
+            break;
+        case TOKEN_USING:
+            std::cout << "USING";
+            break;
         case TOKEN_IDENTIFIER:
             std::cout << "IDENTIFIER";
+            break;
+            break;
+        case TOKEN_INTERPOLATION:
+            std::cout << "INTERPOLATION";
             break;
         case TOKEN_ERROR:
             std::cout << "ERROR";

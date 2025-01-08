@@ -1,3 +1,23 @@
-main := () {
-    print("hello, world!")
+ns main
+
+using std
+
+const jack :int = 10
+
+func say_world => "world"
+
+func add (int a, int b) :int => a + b
+
+func main {
+    @print "Hello, %sayWorld%"
 }
+
+type Person {
+    name :str
+    age :u16
+}
+
+extend Person {
+    op `==`(const Person& p2) :bool => $1.name == p2.name && $1.age == p2.age
+}
+
