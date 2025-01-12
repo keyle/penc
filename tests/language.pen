@@ -1,0 +1,176 @@
+// Basic introduction
+
+// this is a comment
+
+/* this is another comment, which can be inlined within code 
+.. or used for a block */
+
+/**
+    this is intended for doco, but do as you will
+    note that when a function has no parameters, `()` is optional
+**/
+int main {
+    print("hello world")
+    ret 0
+}
+
+// nutty shorthand of the above, return straight to stdout
+
+
+int add(int a, b, c) => a + b + c
+int add(int a..b) => a + ..b
+
+// compile time const
+float const MAX_HEALTH = 100.0
+
+// variable
+// by default declaration is final, e.g. runtime final
+float health = 20.0
+// runtime variables have to be marked as variadic
+float health = 20.0 
+
+// multiple declaration of variables of the same type
+// without an initial value, type must be declared
+int var a, b, c
+int a, b, c = 0
+
+// in conditional branching, `()` around the condition are also optional
+if a == b { wee() } else { woo() }
+
+// we can invert the if for simple statement
+// this is purely an aesthetic choice and not required 
+// it _can_ help with readability
+int factorial(int n) {
+    ret 1 if n == 0 || n == 1
+    ret n * factorial(n - 1)
+}
+
+wee() if a == b else woo() // is also valid
+
+// you can push your luck but I wouldn't go this far
+wee() if a == b else woo() if a == c else fiiine()
+is_adult_acting_like_a_child = true if true if not false // is valid
+
+// again this is purely an aesthetic choice and you might prefer the traditional
+
+if a == b { 
+    weeh()
+} else if a == c {  
+    woo()
+} else {
+    fiiine()
+}
+
+// this also works for expression statement
+
+struct Player {
+    float health = 100.0
+
+    // if a value isn't specified, the default will be 0.0 for a float
+    float x, y
+
+    // our structs can be augmented with methods
+
+    void damage => health -= 1.0
+    void regen => health = 100.0
+
+    // note the use of $x to annotate the parameter x clashing with 
+    // the player's x variable. `$` stands for local
+    // also note the use of `;` to add a second statemnt on the same line
+    void move(const float x, y) => x += $x; y += $y
+
+    // this can be written this way
+    void rewind(const float x, y) {
+        x -= $x
+        y -= $y
+    }
+}
+
+// we can add to our struct somewhere else, e.g. a different file
+extend struct Player {
+    // the equivalent of passing player to a toString() function
+    // note: the string type is `str`, not string
+    string => "player %x, %y"
+}
+
+enum PlayerType {
+    computer,
+    remote,
+    ai,
+}
+
+// enums can also be extended
+extend enum PlayerType {
+    is_ai_agi => !true
+}
+
+// we define the namespace: it is default, 
+// there is no real need to define it beyond being pedantic
+ns main 
+
+// this would be another namespace
+ns lib // declarations beyond this namespace would not be accessible in main
+
+struct Enemy {
+    float x, y, dx, dy
+}
+
+local struct Temp {} // local structs are not exported as part of the namespace
+
+ns main // back in main
+
+using lib // we "import" the lib namespace
+
+lib.Enemy enemy1 = {0} // we declare an enemy from the lib namespace
+
+using lib as ext // we can alias our namespace imports
+
+ext.Enemy enemy2 = {0} // using the alias
+
+using lib as main // splat the lib into the main namespace
+
+Enemy enemy3 = {0}
+
+// back in lib we'll extend our struct Enemy
+// and add a helper function as an overload of `==`
+// to determine whether the enemy is the same 
+// if they share the same coordinates
+
+ns lib
+
+extend struct Enemy {
+    // this could be written as equal(float x, y) => ... 
+    `==`(float x, y) => x == $x && y == $y
+}
+
+// Note about namespace and folders
+// like Go, sub-folders need their own namespace
+// if a folder cannot be found, we look for it in your 
+// user's folder .cache/...
+
+assert(enemy1 == enemy2)
+
+ns main
+
+list<str> names = ["Joe", "Jack", "Jasper"]
+
+names.append("Jill")
+
+// fixed sizes list are arrays
+
+array<str> ages1 = [1, 2, 3] // fixed size
+array<str> ages2 = [1..50]   // spread operator
+
+names.prepend("John")
+
+names[3] = "Jerry"
+
+// list or array access
+
+print(names[0:3]) // Joe, Jack, Jasper
+print(names[:3])  // Joe, Jack, Jasper
+print(names[:2])  // Jasper, Jill `:x]` means from the back
+
+// and that concludes the basic introduction
+
+

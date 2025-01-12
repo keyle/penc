@@ -8,8 +8,8 @@ Keyword keywords[] = {
     {  "enum",   TOKEN_ENUM},
     { "async",  TOKEN_ASYNC},
     {"export", TOKEN_EXPORT},
-    {  "void",   TOKEN_VOID},
     {    "if",     TOKEN_IF},
+    {  "else",   TOKEN_ELSE},
     { "while",  TOKEN_WHILE},
     {"return", TOKEN_RETURN},
     { "await",  TOKEN_AWAIT},
@@ -19,6 +19,7 @@ Keyword keywords[] = {
     {  "bool",   TOKEN_BOOL},
     {  "func",   TOKEN_FUNC},
     { "float",  TOKEN_FLOAT},
+    {  "void",   TOKEN_VOID},
     {  "list",   TOKEN_LIST},
     { nullptr,  TOKEN_ERROR},
 };
@@ -235,14 +236,32 @@ char Lexer::peek() {
     return content[current];
 }
 
+char Lexer::peek_next() {
+    if(content.length() <= current + 1)
+        return '\0';
+    return content[current + 1];
+}
+
 void Lexer::skip_whitespace() {
     while (1) {
         char c = peek();
         if (c == ' ' || c == '\t') {  // || c == '\r' || c == '\n') {
             advance();
-        } else if (c == '/' && peek() == '/') {
+        } else if (c == '/' && peek_next() == '/') {
             while (peek() != '\n' && !is_at_end())
                 advance();
+        } else if (c == '/' && peek_next() == '*') {
+            advance();
+            advance();
+            while (peek() != '*' && peek_next() != '/' && !is_at_end()) {
+                if (peek() == '\n') {
+                    line++;
+                    col = 1;
+                }
+                advance();
+            }
+            advance();
+            advance();
         } else {
             break;
         }

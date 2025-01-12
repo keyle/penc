@@ -126,8 +126,23 @@ void print_token(const Token& token) {
         case TOKEN_BOOL:
             std::cout << "BOOL";
             break;
+        case TOKEN_VOID:
+            std::cout << "VOID";
+            break;
+        case TOKEN_LIST:
+            std::cout << "LIST";
+            break;
+        case TOKEN_ARRAY:
+            std::cout << "ARRAY";
+            break;
         case TOKEN_CONST:
             std::cout << "CONST";
+            break;
+        case TOKEN_ENUM:
+            std::cout << "ENUM";
+            break;
+        case TOKEN_STRUCT:
+            std::cout << "STRUCT";
             break;
         case TOKEN_FUNC:
             std::cout << "FUNC";
@@ -137,6 +152,12 @@ void print_token(const Token& token) {
             break;
         case TOKEN_USING:
             std::cout << "USING";
+            break;
+        case TOKEN_IF:
+            std::cout << "IF";
+            break;
+        case TOKEN_ELSE:
+            std::cout << "ELSE";
             break;
         case TOKEN_TYPE:
             std::cout << "TYPE DEF";
