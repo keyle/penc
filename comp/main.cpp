@@ -8,7 +8,7 @@
 #include "token.h"
 #include "utils.h"
 
-std::string readfile(const std::string& filename) {
+std::string read_file(const std::string& filename) {
     std::ifstream inputFile(filename);
     if (!inputFile) {
         perror(("Error opening file: " + filename).c_str());
@@ -22,6 +22,7 @@ void print_usage(const std::string& binary) {
     std::cerr << "Options:\n";
     // std::cerr << "  -o <file>    Write output to <file>\n";
     // std::cerr << "  -d           Enable debug output\n";
+    std::cerr << "  -d           Additional debug prints\n";
     std::cerr << "  -t           Print tokens\n";
     std::cerr << "  -h           Print this help message\n";
 }
@@ -71,7 +72,7 @@ int main(int argc, char* argv[]) {
     }
 
     std::string filename = input_file;
-    std::string content = readfile(filename);
+    std::string content = read_file(filename);
 
     if (debug_mode) {
         std::cerr << "Debug mode enabled\n";
