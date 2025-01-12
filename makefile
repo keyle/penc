@@ -16,11 +16,11 @@ all: $(TARGET)
 
 # Link object files to create the executable
 $(TARGET): $(SRCS) $(HDRS)
-	$(CC) $(FLAGS) -o $(TARGET) $(SRCS)
+	@$(CC) $(FLAGS) -o $(TARGET) $(SRCS)
 
 # Clean build artifacts
 clean:
-	rm -rf $(TARGET) *.o *.dSYM
+	@rm -rf $(TARGET) *.o *.dSYM
 
 # Rebuild
 rebuild: clean all
@@ -38,7 +38,7 @@ tests: rebuild
 
 # Temp debug test
 quick: rebuild
-	./$(TARGET) -t tests/example.pen
+	./$(TARGET) -d -t tests/interpolated.pen
 
 # Release build
 release: FLAGS := -Wall -Wextra -std=c++20 -O2
