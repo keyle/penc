@@ -63,14 +63,6 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    if (debug_mode) {
-        std::cerr << "Debug mode enabled\n";
-    }
-
-    if (print_tokens) {
-        std::cerr << "Print tokens enabled\n";
-    }
-
     if (argc < 2) {
         std::cerr << "No input file specified.\n";
         print_usage(binary_name);
@@ -80,21 +72,32 @@ int main(int argc, char* argv[]) {
     std::string filename = input_file;
     std::string content = readfile(filename);
 
+    if (debug_mode) {
+        std::cerr << "Debug mode enabled\n";
+        sprint(content);
+    }
+
+    // lexing
+
     Lexer lexer;
     lexer = {content, filename};
 
-    if (print_tokens) {
-        Token token;
-        do {
-            token = lexer.scan_token();
-            print_token(token);
-            if (token.type == TOKEN_EOF) {
-                break;
-            }
-        } while (token.type != TOKEN_ERROR);
+    Token token;
+    std::vector<Token> tokens;
+
+    do {
+        token = lexer.scan_token();
+        tokens.push_back(token);
+    } while (token.type != TOKEN_ERROR && token.type != TOKEN_EOF);
+
+    if(print_tokens) {
+        std::cerr << "Print tokens enabled\n";
+        for(const auto& tok : tokens) {
+            print_token(tok);
+        }
     }
 
-    sprint(content);
+    // parsing
 
     return 0;
 }

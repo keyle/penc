@@ -10,4 +10,4 @@ constexpr std::string ANSI_COLOR_YELLOW = "\033[33m";
 constexpr std::string ANSI_COLOR_BLUE = "\033[34m";
 constexpr std::string ANSI_COLOR_RESET = "\033[0m";
 
-void print_token(Token& token);
+void print_token(const Token& token);

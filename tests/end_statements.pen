@@ -1,0 +1,5 @@
+stdout func main => "hello"
+
+main()
+
+print("hello world")

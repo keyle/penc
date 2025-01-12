@@ -3,7 +3,8 @@
 Keyword keywords[] = {
     {    "ns",     TOKEN_NS},
     { "using",  TOKEN_USING},
-    {"struct", TOKEN_STRUCT},
+    {  "type",   TOKEN_TYPE},
+    {"extend", TOKEN_EXTEND},
     {  "enum",   TOKEN_ENUM},
     { "async",  TOKEN_ASYNC},
     {"export", TOKEN_EXPORT},
@@ -51,14 +52,18 @@ Token Lexer::scan_token() {
         case ']':
             return make_token(TOKEN_RBRACKET);
         case ':':
-             if (peek() == '=') {
+            if (peek() == '=') {
                 advance();
                 return make_token(TOKEN_AUTO_ASSIGN);
             } else {
                 return make_token(TOKEN_COLON);
             }
+        case '\n':
+            line++;
+            col = 1;
+            // fall through
         case ';':
-            return make_token(TOKEN_SEMICOLON);
+            return make_token(TOKEN_ENDSTATEMENT);
         case '.':
             return make_token(TOKEN_DOT);
         case ',':
@@ -124,12 +129,18 @@ Token Lexer::scan_token() {
                 advance();
                 return make_token(TOKEN_BIN_OR);
             }
+        case '%':
+            if (within_interpolation)
+                return string_with_x_quotes(true);
+            else
+                return make_token(TOKEN_PERCENT);
+            break;
         case '"':
             // TODO parse string interpolation within here. Unroll this function and return STRING_LITERAL + INTERPOLATED + STRING_LITERAL...
             // basically we need a state to say we are within a string literal and we should only get out of it when we find an actual second `"`
-            return string_with_double_quotes(true);
+            return string_with_x_quotes(true);
         case '\'':
-            return string_with_double_quotes(false);
+            return string_with_x_quotes(false);
 
             // Add more cases as needed
     }
@@ -169,18 +180,38 @@ Token Lexer::number() {
     return make_token(TOKEN_NUMBER_LITERAL);
 }
 
-Token Lexer::string_with_double_quotes(bool double_quote) {
+//
+// NOTE interpolation: for now we only support interpolation within double quotes
+//
+// we also don't support anything else than a simple ident technically
+// although there is no reason why we couldn't.
+//
+Token Lexer::string_with_x_quotes(bool double_quote) {
     const char quote = double_quote ? '"' : '\'';
-    while (peek() != quote && !is_at_end()) {
-        if (peek() == '\n')  // support multiline strings
+    bool interpolation = false;
+    while (!is_at_end()) {
+        const char peeked = peek();
+        if (peeked == quote) {
+            break;
+        }
+        if (double_quote && peeked == '%') {
+            interpolation = true;
+            break;
+        }
+        if (peeked == '\n') {  // support multiline strings
             ++line;
+        }
         advance();
     }
 
     if (is_at_end())
         return Token{TOKEN_ERROR, "Unterminated string", line, col};
 
-    advance();  // advanced over the closing quote
+    if (interpolation)
+        within_interpolation = true;  // tell the lexer to resume string later
+
+    advance();  // advanced over the closing quote or opening % of interpolation inside double quotes
+
     return make_token(TOKEN_STRING_LITERAL);
 }
 
@@ -190,12 +221,13 @@ bool Lexer::is_at_end() const {
 
 char Lexer::advance() {
     ch = content[current++];
-    if (ch == '\n') {
-        ++line;
-        col = 1;
-    } else {
-        ++col;
-    }
+    // if (ch == '\n') {
+    //     ++line;
+    //     col = 1;
+    // } else {
+    //     ++col;
+    // }
+    ++col;
     return ch;
 }
 
@@ -206,7 +238,7 @@ char Lexer::peek() {
 void Lexer::skip_whitespace() {
     while (1) {
         char c = peek();
-        if (c == ' ' || c == '\t' || c == '\r' || c == '\n') {
+        if (c == ' ' || c == '\t') {  // || c == '\r' || c == '\n') {
             advance();
         } else if (c == '/' && peek() == '/') {
             while (peek() != '\n' && !is_at_end())

@@ -1,0 +1,3 @@
+const test: string = "some %interpolated% value here"
+const test2: string = "some" + "%varname% interpolation"
+const test3 = "some %interpolated%" + "string"

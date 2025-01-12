@@ -3,9 +3,10 @@
 
 #include <iostream>
 
-void print_token(Token& token) {
+void print_token(const Token& token) {
     std::cout << ANSI_COLOR_YELLOW << "[L" << token.line << ":" << token.col << "]    \t" << ANSI_COLOR_RESET;
     std::cout << ANSI_COLOR_BLUE;
+    bool print_token = true;
     switch (token.type) {
         case TOKEN_LPAREN:
             std::cout << "LPAREN";
@@ -43,6 +44,10 @@ void print_token(Token& token) {
         case TOKEN_DOT:
             std::cout << "DOT";
             break;
+        case TOKEN_ENDSTATEMENT:
+            std::cout << "END STATEMENT";
+            print_token = false;
+            break;
         case TOKEN_EQUALS:
             std::cout << "EQUALS";
             break;
@@ -65,7 +70,7 @@ void print_token(Token& token) {
             std::cout << "COLON";
             break;
         case TOKEN_AUTO_ASSIGN:
-            std::cout << "AUTO_ASSIGN"; // :=
+            std::cout << "AUTO_ASSIGN";  // :=
             break;
         case TOKEN_QUESTION:
             std::cout << "QUESTION";
@@ -133,6 +138,12 @@ void print_token(Token& token) {
         case TOKEN_USING:
             std::cout << "USING";
             break;
+        case TOKEN_TYPE:
+            std::cout << "TYPE DEF";
+            break;
+        case TOKEN_EXTEND:
+            std::cout << "TYPE EXTENSION";
+            break;
         case TOKEN_IDENTIFIER:
             std::cout << "IDENTIFIER";
             break;
@@ -146,5 +157,9 @@ void print_token(Token& token) {
         default:
             std::cout << "OTHER (" << token.type << ")";
     }
-    std::cout << ANSI_COLOR_RESET << " " << token.lexeme << '\n';
+
+    if (print_token)
+        std::cout << ANSI_COLOR_RESET << " " << token.lexeme << '\n';
+    else
+        std::cout << ANSI_COLOR_RESET << '\n';
 }

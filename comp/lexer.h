@@ -15,7 +15,8 @@ enum TokenType {
     // keywords
     TOKEN_NS,
     TOKEN_USING,
-    TOKEN_STRUCT,
+    TOKEN_TYPE,
+    TOKEN_EXTEND,
     TOKEN_IF,
     TOKEN_WHILE,
     TOKEN_RETURN,
@@ -34,7 +35,7 @@ enum TokenType {
     TOKEN_LIST,
     // single character tokens
     TOKEN_COLON,
-    TOKEN_SEMICOLON,
+    TOKEN_ENDSTATEMENT,
     TOKEN_AT,
     TOKEN_DOT,
     TOKEN_COMMA,
@@ -54,6 +55,7 @@ enum TokenType {
     TOKEN_QUESTION,
     TOKEN_EXCLAMATION,
     TOKEN_AMPERSAND,
+    TOKEN_PERCENT,
     TOKEN_DOLLAR,
     TOKEN_BIN_AND,
     TOKEN_BIN_OR,
@@ -90,6 +92,7 @@ struct Lexer {
     char ch = 0;
     int line = 1;
     int col = 1;
+    bool within_interpolation = false;
 
     Token scan_token();
 
@@ -99,7 +102,8 @@ struct Lexer {
     bool is_digit(char c);
     TokenType identifier_type();
     Token identifier();
-    Token string_with_double_quotes(bool single_quote);
+    Token string_with_x_quotes(bool single_quote);
+    Token string_interpolation();
     Token number();
     bool is_at_end() const;
     char advance();
