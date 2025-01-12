@@ -1,4 +1,5 @@
-#include "compiler.h"
+#include "lexer.h"
+#include "token.h"
 
 Keyword keywords[] = {
     {    "ns",     TOKEN_NS},

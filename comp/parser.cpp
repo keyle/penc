@@ -1,5 +1,6 @@
-#include "compiler.h"
+#include "parser.h"
 #include "token.h"
+#include "utils.h"
 
 Token& Parser::peek() {
     return tokens[start];

@@ -1,4 +1,5 @@
-#include "compiler.h"
+#include "debug.h"
+#include "token.h"
 
 #include <iostream>
 

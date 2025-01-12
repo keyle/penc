@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstddef>
+
 enum TokenType {
     // error types
     TOKEN_EOF = 5,
@@ -68,4 +70,12 @@ enum TokenType {
     TOKEN_GREATER_EQUAL,
     TOKEN_EQUAL_EQUAL,
     TOKEN_BANG_EQUAL,
+};
+
+struct Token {
+    TokenType type;
+    size_t start;
+    size_t end;  // not strictly needed, can be derived from start and type, or until the next space
+    size_t line;
+    size_t col;
 };

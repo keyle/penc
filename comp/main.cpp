@@ -1,9 +1,10 @@
+#include "lexer.h"
+#include "parser.h"
+#include "utils.h"
 #include <cstdio>
 #include <format>
 #include <fstream>
 #include <iostream>
-
-#include "compiler.h"
 
 string read_file(const string& filename) {
     std::ifstream inputFile(filename);
