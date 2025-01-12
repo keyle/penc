@@ -1,8 +1,6 @@
 #pragma once
 
-#include "opcode.h"
 #include "token.h"
-#include <cassert>
 #include <iostream>
 
 using std::string;

@@ -1,6 +1,7 @@
 #include "parser.h"
 #include "token.h"
 #include "utils.h"
+#include <cassert>
 
 Token& Parser::peek() {
     return tokens[start];

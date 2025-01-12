@@ -1,7 +1,6 @@
 #pragma once
 
 #include "token.h"
-#include <cassert>
 #include <iostream>
 #include <string>
 
