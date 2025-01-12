@@ -64,7 +64,7 @@ Token Lexer::scan_token() {
             col = 1;
             // fall through
         case ';':
-            return make_token(TOKEN_ENDSTATEMENT);
+            return make_token(TOKEN_END);
         case '.':
             return make_token(TOKEN_DOT);
         case ',':

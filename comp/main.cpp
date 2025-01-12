@@ -5,16 +5,16 @@
 
 #include "compiler.h"
 
-std::string read_file(const std::string& filename) {
+string read_file(const string& filename) {
     std::ifstream inputFile(filename);
     if (!inputFile) {
         perror(("Error opening file: " + filename).c_str());
         return "";
     }
-    return std::string((std::istreambuf_iterator<char>(inputFile)), std::istreambuf_iterator<char>());
+    return string((std::istreambuf_iterator<char>(inputFile)), std::istreambuf_iterator<char>());
 }
 
-void print_usage(const std::string& binary) {
+void print_usage(const string& binary) {
     std::cerr << std::format("Usage: {} [options] <file>\n", binary);
     std::cerr << "Options:\n";
     // std::cerr << "  -o <file>    Write output to <file>\n";
@@ -25,15 +25,15 @@ void print_usage(const std::string& binary) {
 }
 
 int main(int argc, char* argv[]) {
-    std::string binary_name = argv[0];
+    string binary_name = argv[0];
     bool debug_mode = false;
     bool print_tokens = false;
 
-    std::string input_file;
-    std::string output_file = "out";
+    string input_file;
+    string output_file = "out";
 
     for (int i = 1; i < argc; i++) {
-        const std::string arg = argv[i];
+        const string arg = argv[i];
         if (arg == "-d") {
             debug_mode = true;
         } else if (arg == "-t") {
@@ -68,8 +68,8 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    std::string filename = input_file;
-    std::string content = read_file(filename);
+    string filename = input_file;
+    string content = read_file(filename);
 
     if (debug_mode) {
         std::cerr << "Debug mode enabled\n";
@@ -78,16 +78,14 @@ int main(int argc, char* argv[]) {
 
     // lexing
 
-    Lexer lexer;
-    lexer = {content, filename};
-
+    Lexer lexer = {.filename = filename, .content = content};
     Token token;
-    std::vector<Token> tokens;
+    vector<Token> tokens;
 
     do {
         token = lexer.scan_token();
 
-        if (!tokens.empty() && tokens.back().type == TOKEN_ENDSTATEMENT && token.type == TOKEN_ENDSTATEMENT)
+        if (!tokens.empty() && tokens.back().type == TOKEN_END && token.type == TOKEN_END)
             continue;  // don't duplicate
 
         tokens.push_back(token);
@@ -101,6 +99,9 @@ int main(int argc, char* argv[]) {
     }
 
     // parsing
+
+    Parser parser = {.content = content, .tokens = tokens};
+    parser.parse_tokens();
 
     return 0;
 }

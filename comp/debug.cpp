@@ -7,6 +7,10 @@ void print_token(const Token& token, const std::string& content) {
     std::cout << ANSI_COLOR_BLUE;
     bool print_token = true;
     switch (token.type) {
+        case TOKEN_END:
+            std::cout << "---- END ----";
+            print_token = false;
+            break;
         case TOKEN_LPAREN:
             std::cout << "LPAREN";
             break;
@@ -42,10 +46,6 @@ void print_token(const Token& token, const std::string& content) {
             break;
         case TOKEN_DOT:
             std::cout << "DOT";
-            break;
-        case TOKEN_ENDSTATEMENT:
-            std::cout << "END STATEMENT";
-            print_token = false;
             break;
         case TOKEN_EQUALS:
             std::cout << "EQUALS";
@@ -172,7 +172,7 @@ void print_token(const Token& token, const std::string& content) {
             std::cout << "INTERPOLATION";
             break;
         case TOKEN_ERROR:
-            std::cout << "ERROR";
+            std::cout << "*** ERROR ***";
             break;
         default:
             std::cout << "OTHER (" << token.type << ")";

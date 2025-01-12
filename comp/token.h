@@ -2,15 +2,15 @@
 
 enum TokenType {
     // error types
-    TOKEN_EOF,
+    TOKEN_EOF = 5,
     TOKEN_ERROR,
     // identifiers
-    TOKEN_IDENTIFIER,
+    TOKEN_IDENTIFIER = 8,
     TOKEN_INTERPOLATION,
     TOKEN_STRING_LITERAL,
     TOKEN_NUMBER_LITERAL,
     // keywords
-    TOKEN_NS,
+    TOKEN_NS = 13,
     TOKEN_USING,
     TOKEN_TYPE,
     TOKEN_EXTEND,
@@ -25,7 +25,7 @@ enum TokenType {
     TOKEN_EXPORT,
     TOKEN_CONST,
     // types
-    TOKEN_VOID,
+    TOKEN_VOID = 28,
     TOKEN_STRING,
     TOKEN_INT,
     TOKEN_FLOAT,
@@ -34,8 +34,8 @@ enum TokenType {
     TOKEN_LIST,
     TOKEN_ARRAY,
     // single character tokens
-    TOKEN_COLON,
-    TOKEN_ENDSTATEMENT,
+    TOKEN_COLON = 37,
+    TOKEN_END,
     TOKEN_AT,
     TOKEN_DOT,
     TOKEN_COMMA,
@@ -62,7 +62,7 @@ enum TokenType {
     TOKEN_LESS,
     TOKEN_GREATER,
     // binop and operators
-    TOKEN_ARROW,
+    TOKEN_ARROW = 65,
     TOKEN_AUTO_ASSIGN,
     TOKEN_LESS_EQUAL,
     TOKEN_GREATER_EQUAL,
