@@ -39,7 +39,7 @@ tests: rebuild
 
 # Temp debug test
 quick: rebuild
-	./$(TARGET) -d -t tests/first_program.pen
+	./$(TARGET) -d -b tests/first_program.pen
 
 # Release build
 release: FLAGS := $(RELEASE_FLAGS)

@@ -22,6 +22,7 @@ void print_usage(const string& binary) {
     // std::cerr << "  -d           Enable debug output\n";
     std::cerr << "  -d           Additional debug prints\n";
     std::cerr << "  -t           Print tokens\n";
+    std::cerr << "  -b           Print bytecode\n";
     std::cerr << "  -h           Print this help message\n";
 }
 
@@ -29,6 +30,7 @@ int main(int argc, char* argv[]) {
     string binary_name = argv[0];
     bool debug_mode = false;
     bool print_tokens = false;
+    bool print_bytecode = false;
 
     string input_file;
     string output_file = "out";
@@ -39,6 +41,8 @@ int main(int argc, char* argv[]) {
             debug_mode = true;
         } else if (arg == "-t") {
             print_tokens = true;
+        } else if (arg == "-b") {
+            print_bytecode = true;
         } else if (arg == "-h") {
             print_usage(binary_name);
             return 0;
@@ -103,6 +107,13 @@ int main(int argc, char* argv[]) {
 
     Parser parser = {.content = content, .tokens = tokens};
     parser.parse_tokens();
+
+    if (print_bytecode) {
+        std::cerr << "Print bytecode enabled\n";
+        for (const Bytecode& bc : parser.bytecode) {
+            print_bc(bc, parser);
+        }
+    }
 
     return 0;
 }

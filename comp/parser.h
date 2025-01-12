@@ -44,6 +44,7 @@ struct Parser {
     vector<Token>& tokens;
     vector<Bytecode> bytecode = {};
     vector<FuncDecl> funcdecls = {};
+    string opcodeToString(Opcode opcode);
     void parse_tokens();
 
   private:

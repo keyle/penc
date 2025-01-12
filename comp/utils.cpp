@@ -1,7 +1,14 @@
-#include "debug.h"
-#include "token.h"
+#include "utils.h"
 
 #include <iostream>
+
+void print_bc(const Bytecode& bc, Parser& parser) {
+    std::cout << ANSI_COLOR_YELLOW << "Bytecode: " << ANSI_COLOR_BLUE << parser.opcodeToString(bc.opcode) << '\t' << bc.operand1 << '\t' << bc.operand2 << ANSI_COLOR_RESET << '\n';
+    if (bc.opcode == Opcode::DECL_FUNC) {
+        FuncDecl& decl = parser.funcdecls[bc.operand1];
+        std::cout << ANSI_COLOR_YELLOW << "\t\tname: " << ANSI_COLOR_BLUE << decl.name << ANSI_COLOR_GREEN << "\t ret:" << decl.return_type << ANSI_COLOR_RESET << '\n';
+    }
+}
 
 void print_token(const Token& token, const std::string& content) {
     std::cout << ANSI_COLOR_YELLOW << "[L" << token.line << ":" << token.col << "]    \t" << ANSI_COLOR_RESET;

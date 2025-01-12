@@ -19,6 +19,43 @@ string Parser::str_from_token(Token& token) {
     return content.substr(token.start, token.end - token.start);
 }
 
+string Parser::opcodeToString(Opcode opcode) {
+    switch (opcode) {
+        case Opcode::DECL_FUNC:
+            return "DECL_FUNC";
+        case Opcode::DECL_VAR:
+            return "DECL_VAR";
+        case Opcode::DECL_CONST:
+            return "DECL_CONST";
+        case Opcode::LOAD_CONSTANT:
+            return "LOAD_CONSTANT";
+        case Opcode::LOAD_LOCAL:
+            return "LOAD_LOCAL";
+        case Opcode::STORE_LOCAL:
+            return "STORE_LOCAL";
+        case Opcode::LOAD_GLOBAL:
+            return "LOAD_GLOBAL";
+        case Opcode::STORE_GLOBAL:
+            return "STORE_GLOBAL";
+        case Opcode::POP:
+            return "POP";
+        case Opcode::ADD:
+            return "ADD";
+        case Opcode::SUB:
+            return "SUB";
+        case Opcode::JUMP_IF_FALSE:
+            return "JUMP_IF_FALSE";
+        case Opcode::JUMP:
+            return "JUMP";
+        case Opcode::CALL:
+            return "CALL";
+        case Opcode::RETURN:
+            return "RETURN";
+        default:
+            return "UNKNOWN_OPCODE";
+    }
+}
+
 void Parser::parse_tokens() {
     std::cout << "parsing tokens\n";
     Token& token = peek();
@@ -53,14 +90,14 @@ void Parser::parse_tokens() {
                 } else {
                     assert(false && "Expected an equals sign or opening parenthesis after type declaration");
                 }
-                std::cout << "type, emit a declaration\n";
                 break;
             }
             case TOKEN_IDENTIFIER:
-                assert(false && "Rogue identifier without type declaration");
+                print("Rogue identifier without type declaration");
                 break;
             default:
-                std::cout << "default\n";
+                // std::cout << "default\n";
+                break;
         }
 
         print_token(token, content);
