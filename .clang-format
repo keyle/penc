@@ -6,3 +6,4 @@ SpacesBeforeTrailingComments: 2
 PointerAlignment: Left
 AlignArrayOfStructures: Right
 IndentCaseLabels: true
+AllowShortIfStatementsOnASingleLine: true

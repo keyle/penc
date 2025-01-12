@@ -1,6 +1,7 @@
 CC = clang++
 
-FLAGS = -Wall -Wextra -std=c++20
+FLAGS = -Wall -Wextra -g -std=c++20
+RELEASE_FLAGS = -Wall -Wextra -std=c++20 -O2
 
 # Source files
 SRCS = comp/**.cpp
@@ -41,5 +42,5 @@ quick: rebuild
 	./$(TARGET) -d -t tests/interpolated.pen
 
 # Release build
-release: FLAGS := -Wall -Wextra -std=c++20 -O2
+release: FLAGS := $(RELEASE_FLAGS)
 release: rebuild

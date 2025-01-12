@@ -73,7 +73,7 @@ int main(int argc, char* argv[]) {
 
     if (debug_mode) {
         std::cerr << "Debug mode enabled\n";
-        sprint(content);
+        std::cout << content << '\n';
     }
 
     // lexing
@@ -83,25 +83,20 @@ int main(int argc, char* argv[]) {
 
     Token token;
     std::vector<Token> tokens;
-    TokenType last = TOKEN_ENDSTATEMENT;
 
     do {
         token = lexer.scan_token();
 
-        if (!tokens.empty())
-            last = tokens.back().type;
-
-        if (last == TOKEN_ENDSTATEMENT && token.type == TOKEN_ENDSTATEMENT) {
+        if (!tokens.empty() && tokens.back().type == TOKEN_ENDSTATEMENT && token.type == TOKEN_ENDSTATEMENT)
             continue;  // don't duplicate
-        }
 
         tokens.push_back(token);
     } while (token.type != TOKEN_ERROR && token.type != TOKEN_EOF);
 
     if (print_tokens) {
         std::cerr << "Print tokens enabled\n";
-        for (const auto& tok : tokens) {
-            print_token(tok);
+        for (const Token& tok : tokens) {
+            print_token(tok, content);
         }
     }
 

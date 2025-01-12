@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-void print_token(const Token& token) {
+void print_token(const Token& token, const std::string& content) {
     std::cout << ANSI_COLOR_YELLOW << "[L" << token.line << ":" << token.col << "]    \t" << ANSI_COLOR_RESET;
     std::cout << ANSI_COLOR_BLUE;
     bool print_token = true;
@@ -178,8 +178,10 @@ void print_token(const Token& token) {
             std::cout << "OTHER (" << token.type << ")";
     }
 
-    if (print_token)
-        std::cout << ANSI_COLOR_RESET << " " << token.lexeme << '\n';
-    else
+    if (print_token) {
+        auto lexeme = content.substr(token.start, token.end - token.start);
+        std::cout << ANSI_COLOR_RESET << " " << lexeme << '\n';
+    } else {
         std::cout << ANSI_COLOR_RESET << '\n';
+    }
 }

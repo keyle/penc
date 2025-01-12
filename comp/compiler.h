@@ -15,9 +15,10 @@ extern Keyword keywords[];
 
 struct Token {
     TokenType type;
-    std::string lexeme;
-    int line;
-    int col;
+    size_t start;
+    size_t end;
+    size_t line;
+    size_t col;
 };
 
 struct Lexer {
@@ -26,8 +27,8 @@ struct Lexer {
     size_t start = 0;
     size_t current = 0;
     char ch = 0;
-    int line = 1;
-    int col = 1;
+    size_t line = 1;
+    size_t col = 1;
     bool within_interpolation = false;
 
     Token scan_token();
@@ -54,9 +55,4 @@ constexpr std::string ANSI_COLOR_YELLOW = "\033[33m";
 constexpr std::string ANSI_COLOR_BLUE = "\033[34m";
 constexpr std::string ANSI_COLOR_RESET = "\033[0m";
 
-void print_token(const Token& token);
-
-
-inline void sprint(const std::string& str) {
-    std::cout << str << '\n';
-}
+void print_token(const Token& token, const std::string& content);

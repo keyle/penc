@@ -150,7 +150,8 @@ Token Lexer::scan_token() {
 }
 
 Token Lexer::make_token(TokenType type) {
-    return Token{type, content.substr(start, current - start), line, col};
+    // return Token{type, content.substr(start, current - start), line, col};
+    return Token{.type = type, .start = start, .end = current, .line = line, .col = col};
 }
 
 bool Lexer::is_alpha(char c) {
@@ -206,7 +207,7 @@ Token Lexer::string_with_x_quotes(bool double_quote) {
     }
 
     if (is_at_end())
-        return Token{TOKEN_ERROR, "Unterminated string", line, col};
+        return Token{.type = TOKEN_ERROR, .start = start, .end = current, .line = line, .col = col};
 
     if (interpolation)
         within_interpolation = true;  // tell the lexer to resume string later
@@ -237,7 +238,7 @@ char Lexer::peek() {
 }
 
 char Lexer::peek_next() {
-    if(content.length() <= current + 1)
+    if (content.length() <= current + 1)
         return '\0';
     return content[current + 1];
 }
