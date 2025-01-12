@@ -1,4 +1,7 @@
 
+# Notes
+
+Jai
 
 - lexing
 - parsing
@@ -9,7 +12,51 @@
 - compile time execution
 - machine code generator
 
+Zig
 
+per file (following is very parallelisable)
+- tokenizer -> tokens
+- parser -> ast
+- astgen -> ZIR (IR that has no type analysis yet)
+per function
+- sema -> AIR (has semantic analysis done)
+per ISA (arm/x86)
+- codegen -> MIR (WASM, llvm, C)
+- emit -> machine code
+
+Zig tokens: enum of what it is + start integer, that's all (derive the length by the type)
+
+Zig ast: 
+struct AstNode {
+    enum NodeType type;
+    bool already_traced_this_node;
+    size_t line; size_t column;
+    ZigType *owner;
+    union {
+        AstNodeFnDef fn_def;
+        AstNodeFnProto fn_proto;
+        AstNodeParamDecl param_decl;
+        AstNodeBlock block;
+        AstNode * grouped_expr;
+        AstNodeReturnExpr return_expr;
+        AstNodeDefer defer;
+        AstNodeTestDecl test_decl;
+        AstNodeBinOpExpr bin_op_expr;
+        AstNodeCatchExpr unwrap_err_expr;
+        AstNodeUnwrapOptional unwrap_optional;
+        AstNodePrefixOpExpr prefix_op_expr;
+        AstNodePointerType pointer_type;
+        AstNodeFnCallExpr fn_call_expr;
+    }
+}
+
+ZIR 4 arrays
+- tags
+- common data
+- extra array
+- string hashtable
+
+fast to produce, easy to save
 
 
 Compiler Stages Explained:
