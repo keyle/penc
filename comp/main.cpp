@@ -3,10 +3,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "debug.h"
-#include "lexer.h"
-#include "token.h"
-#include "utils.h"
+#include "compiler.h"
 
 std::string read_file(const std::string& filename) {
     std::ifstream inputFile(filename);

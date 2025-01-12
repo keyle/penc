@@ -1,6 +1,6 @@
 CC = clang++
 
-FLAGS = -Wall -Wextra -std=c++20 -g
+FLAGS = -Wall -Wextra -std=c++20
 
 # Source files
 SRCS = comp/**.cpp

@@ -1,5 +1,4 @@
-#include "debug.h"
-#include "lexer.h"
+#include "compiler.h"
 
 #include <iostream>
 
