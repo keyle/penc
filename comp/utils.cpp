@@ -5,8 +5,10 @@
 void print_bc(const Bytecode& bc, Parser& parser) {
     std::cout << ANSI_COLOR_YELLOW << "Bytecode: " << ANSI_COLOR_BLUE << parser.opcodeToString(bc.opcode) << '\t' << bc.operand1 << '\t' << bc.operand2 << ANSI_COLOR_RESET << '\n';
     if (bc.opcode == Opcode::DECL_FUNC) {
-        FuncDecl& decl = parser.funcdecls[bc.operand1];
+        FuncDecl& decl = parser.funcs[bc.operand1];
         std::cout << ANSI_COLOR_YELLOW << "\t\tname: " << ANSI_COLOR_BLUE << decl.name << ANSI_COLOR_GREEN << "\t ret:" << decl.return_type << ANSI_COLOR_RESET << '\n';
+    } else if (bc.opcode == Opcode::LABEL) {
+        std::cout << ANSI_COLOR_YELLOW << "\t\tlabel: " << ANSI_COLOR_BLUE << parser.labels[bc.operand1] << ANSI_COLOR_RESET << '\n';
     }
 }
 

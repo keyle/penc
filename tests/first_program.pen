@@ -1,4 +1,4 @@
 int main {
-    print("hello, world!")
+    print(add("hello", say_hello("world")))
     ret 0
 }

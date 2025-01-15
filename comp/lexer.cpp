@@ -138,8 +138,6 @@ Token Lexer::scan_token() {
                 return make_token(TOKEN_PERCENT);
             break;
         case '"':
-            // TODO parse string interpolation within here. Unroll this function and return STRING_LITERAL + INTERPOLATED + STRING_LITERAL...
-            // basically we need a state to say we are within a string literal and we should only get out of it when we find an actual second `"`
             return string_with_x_quotes(true);
         case '\'':
             return string_with_x_quotes(false);

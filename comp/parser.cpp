@@ -7,7 +7,7 @@ Token& Parser::peek() {
     return tokens[start];
 }
 
-Token& Parser::take() {
+Token& Parser::yank() {
     return tokens[start++];
 }
 
@@ -37,6 +37,8 @@ string Parser::opcodeToString(Opcode opcode) {
             return "LOAD_GLOBAL";
         case Opcode::STORE_GLOBAL:
             return "STORE_GLOBAL";
+        case Opcode::LABEL:
+            return "LABEL";
         case Opcode::POP:
             return "POP";
         case Opcode::ADD:
@@ -61,9 +63,15 @@ void Parser::parse_tokens() {
     Token& token = peek();
 
     do {
-        token = take();
+        token = yank();
+
+        // TODO see notes, and rewrite is reverse polish notation RPN
+        //
+        // 5 2 4 * + x :=
+        //
 
         switch (token.type) {
+            // type first
             case TOKEN_VOID:
             case TOKEN_INT:
             case TOKEN_FLOAT:
@@ -71,8 +79,8 @@ void Parser::parse_tokens() {
             case TOKEN_LIST:
             case TOKEN_ARRAY: {
                 assert(peek().type == TOKEN_IDENTIFIER && "Expected an identifier after type declaration");
-                Token& ident = take();
-                auto next = peek();
+                Token& ident = yank();
+                const auto next = peek();
                 if (next.type == TOKEN_EQUALS) {
                     // emit a declaration
                     print("decl const or var, emit a declaration");
@@ -81,25 +89,70 @@ void Parser::parse_tokens() {
                     print("decl func, emit a function declaration");
                 } else if (next.type == TOKEN_LBRACE) {
                     // emit a function declaration without parameters
-                    funcdecls.push_back(FuncDecl{
-                        .name = str_from_token(ident),
+                    const auto ident_name = str_from_token(ident);
+                    funcs.push_back(FuncDecl{
+                        .name = ident_name,
                         .return_type = str_from_token(token)});
-
-                    bytecode.push_back(Bytecode{Opcode::DECL_FUNC, funcdecls.size() - 1, {}});
+                    const auto index = funcs.size() - 1;
+                    labels.push_back(ident_name);
+                    const auto label_index = labels.size() - 1;
+                    bytecode.push_back(Bytecode{Opcode::DECL_FUNC, index, {}});
+                    bytecode.push_back(Bytecode{Opcode::LABEL, label_index, {}});
+                    yank();  // consume the LBRACE
                     print("decl func emit a function declaration without parameters");
                 } else {
                     assert(false && "Expected an equals sign or opening parenthesis after type declaration");
                 }
                 break;
             }
-            case TOKEN_IDENTIFIER:
-                print("Rogue identifier without type declaration");
+            // identifier first
+            case TOKEN_IDENTIFIER: {
+                printf("identifier: \t");
+                print_token(token, content);
+                auto next = peek();
+                if (next.type == TOKEN_EQUALS) {  // Var (re)Assignment
+                    // emit an assignment
+                    print("TODO assignment?");
+                } else if (next.type == TOKEN_LPAREN) {  // Function call
+                    // CALL :func_name
+                    const auto ident_name = str_from_token(token);
+                    labels.push_back(ident_name);
+                    const auto label_index = labels.size() - 1;
+                    bytecode.push_back(Bytecode{Opcode::CALL, label_index, {}});
+                    while (1) {
+                        token = yank();
+                        if (token.type == TOKEN_RPAREN) {
+                            break;
+                        }
+                        // check token is a type
+                        switch (token.type) {
+                            case TOKEN_IDENTIFIER:
+                                if (peek().type == TOKEN_LPAREN) {
+                                    // argument
+                                    break;
+                                }
+                                break;
+                            case TOKEN_COMMA:  // same type as before
+                                continue;
+                            default:
+                                printf("something else <!>: \t");
+                                print_token(token, content);
+                                break;
+                        }
+                    }
+                    print("TODO function call?");
+                } else {
+                    printf("something else <!>: \t");
+                    print_token(token, content);
+                }
                 break;
+            }
             default:
+                printf("something: \t");
+                print_token(token, content);
                 // std::cout << "default\n";
                 break;
         }
 
-        print_token(token, content);
     } while (token.type != TOKEN_EOF);
 }

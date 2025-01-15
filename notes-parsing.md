@@ -689,3 +689,4 @@ that would be reducing the search space.
 The question becomes whether to prioritise memory or lookup speed
 
 We could look at having a bytecode as linked list
+
