@@ -1,6 +1,6 @@
 CC = clang++
 
-FLAGS = -Wall -Wextra -O0 -g -std=c++20
+FLAGS = -Wall -Wextra -g -std=c++20
 RELEASE_FLAGS = -Wall -Wextra -std=c++20 -O2
 
 # Source files

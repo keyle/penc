@@ -1,4 +1,1 @@
-int main {
-    print(add("hello", say_hello("world")))
-    ret 0
-}
+a * b

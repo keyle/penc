@@ -9,6 +9,7 @@ using std::vector;
 
 // NOTE on change: also update opcodeToString
 enum class Opcode {
+    NOP,
     LABEL,      //
     DECL_FUNC,  //
     DECL_VAR,
@@ -20,6 +21,9 @@ enum class Opcode {
     STORE_GLOBAL,
     POP,
     ADD,
+    MULT,
+    DIV,
+    MOD,
     SUB,
     JUMP_IF_FALSE,
     JUMP,
@@ -29,8 +33,11 @@ enum class Opcode {
 
 struct Bytecode {
     Opcode opcode;
-    size_t operand1;
-    size_t operand2;
+    union Operand {
+        string s;
+        size_t i;
+    } operand1;
+    union Operand operand2;
 };
 
 struct FuncDecl {
@@ -45,8 +52,7 @@ struct Parser {
     string& content;
     vector<Token>& tokens;
     vector<Bytecode> bytecode = {};
-    vector<FuncDecl> funcs = {};
-    vector<string> labels = {};
+    vector<Bytecode> stack = {};
     string opcodeToString(Opcode opcode);
     void parse_tokens();
 
@@ -54,6 +60,10 @@ struct Parser {
     Token& peek();
     Token& yank();
     void advance();
+    void add(Bytecode);
+    Bytecode see();       // look at the stack
+    void push(Bytecode);  // push to the stack
+    Bytecode pop();
     void add(Opcode type, const Token& token);
     string str_from_token(Token& token);
 };

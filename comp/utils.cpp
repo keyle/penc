@@ -3,6 +3,7 @@
 #include <iostream>
 
 void print_bc(const Bytecode& bc, Parser& parser) {
+    std::cout << "print_bc\n";
     std::cout << ANSI_COLOR_YELLOW << "Bytecode: " << ANSI_COLOR_BLUE << parser.opcodeToString(bc.opcode) << '\t' << bc.operand1 << '\t' << bc.operand2 << ANSI_COLOR_RESET << '\n';
     if (bc.opcode == Opcode::DECL_FUNC) {
         FuncDecl& decl = parser.funcs[bc.operand1];
@@ -18,7 +19,7 @@ void print_token(const Token& token, const std::string& content) {
     bool print_token = true;
     switch (token.type) {
         case TOKEN_END:
-            std::cout << "---- END ----";
+            std::cout << "---- EOL ----";
             print_token = false;
             break;
         case TOKEN_LPAREN:
